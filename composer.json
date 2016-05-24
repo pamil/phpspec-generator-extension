@@ -1,0 +1,26 @@
+{
+    "name": "pamil/phpspec-generator-extension",
+    "description": "Provides matchers useful for specifying generators",
+    "keywords": ["phpspec", "matcher", "extension", "generator"],
+    "type": "phpspec-extension",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kamil Kokot",
+            "email": "kamil@kokot.me",
+            "homepage": "http://kamil.kokot.me"
+        }
+    ],
+    "require": {
+        "php": "^5.6|^7.0",
+
+        "phpspec/phpspec": "^2.4"
+    },
+    "require-dev": {
+        "behat/behat": "^3.1",
+        "bossa/phpspec2-expect": "^1.0"
+    },
+    "autoload": {
+        "psr-4": { "Pamil\\PhpSpecGeneratorExtension\\": "src/" }
+    }
+}
