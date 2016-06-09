@@ -41,7 +41,7 @@ class KeyGenerator1
     }
 }
     """
-        When I run phpspec
+        When I run phpspec using the tap format
         Then the suite should pass
 
     Scenario: Negative matching key generator
@@ -75,7 +75,7 @@ class KeyGenerator2
     }
 }
     """
-        When I run phpspec
+        When I run phpspec using the tap format
         Then the suite should pass
 
     Scenario: Positive matching key generator failing if generator has less elements than expected
@@ -109,9 +109,9 @@ class KeyGenerator3
     }
 }
     """
-        When I run phpspec
+        When I run phpspec using the tap format
         Then the suite should not pass
-        And I should see 'expected 2 elements, but only 1 was generated'
+        And I should see 'Expected 2 elements, but only 1 was generated'
 
     Scenario: Positive matching key generator failing if generator has unexpected elements
         Given the spec file "spec/Pamil/KeyGenerator4Spec.php" contains:
@@ -145,9 +145,9 @@ class KeyGenerator4
     }
 }
     """
-        When I run phpspec
+        When I run phpspec using the tap format
         Then the suite should not pass
-        And I should see 'element #1 was expected to have key "Paul", but "Benedict" was given'
+        And I should see 'Element #1 was expected to have key "Paul", but "Benedict" was given'
 
     Scenario: Negative matching key generator failing if generated elements matches the not expected ones
         Given the spec file "spec/Pamil/KeyGenerator5Spec.php" contains:
@@ -181,6 +181,6 @@ class KeyGenerator5
     }
 }
     """
-        When I run phpspec
+        When I run phpspec using the tap format
         Then the suite should not pass
-        And I should see 'generated keys are the same as not expected keys'
+        And I should see 'Generated keys are the same as not expected keys'

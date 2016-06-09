@@ -42,7 +42,7 @@ class InfiniteKeyGenerator1
     }
 }
     """
-        When I run phpspec
+        When I run phpspec using the tap format
         Then the suite should pass
 
     Scenario: Negative matching infinite key generator
@@ -78,5 +78,5 @@ class InfiniteKeyGenerator2
     }
 }
     """
-        When I run phpspec
+        When I run phpspec using the tap format
         Then the suite should pass

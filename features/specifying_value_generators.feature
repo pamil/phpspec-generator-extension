@@ -41,7 +41,7 @@ class ValueGenerator1
     }
 }
     """
-        When I run phpspec
+        When I run phpspec using the tap format
         Then the suite should pass
 
     Scenario: Negative matching value generator
@@ -75,7 +75,7 @@ class ValueGenerator2
     }
 }
     """
-        When I run phpspec
+        When I run phpspec using the tap format
         Then the suite should pass
 
     Scenario: Positive matching value generator failing if generator has less elements than expected
@@ -109,9 +109,9 @@ class ValueGenerator3
     }
 }
     """
-        When I run phpspec
+        When I run phpspec using the tap format
         Then the suite should not pass
-        And I should see 'expected 2 elements, but only 1 was generated'
+        And I should see 'Expected 2 elements, but only 1 was generated'
 
     Scenario: Positive matching value generator failing if generator has unexpected elements
         Given the spec file "spec/Pamil/ValueGenerator4Spec.php" contains:
@@ -145,9 +145,9 @@ class ValueGenerator4
     }
 }
     """
-        When I run phpspec
+        When I run phpspec using the tap format
         Then the suite should not pass
-        And I should see 'element #1 was expected to be "Paul", but "Benedict" was given'
+        And I should see 'Element #1 was expected to be "Paul", but "Benedict" was given'
 
     Scenario: Negative matching value generator failing if generated elements matches the not expected ones
         Given the spec file "spec/Pamil/ValueGenerator5Spec.php" contains:
@@ -181,6 +181,6 @@ class ValueGenerator5
     }
 }
     """
-        When I run phpspec
+        When I run phpspec using the tap format
         Then the suite should not pass
-        And I should see 'generated values are the same as not expected values'
+        And I should see 'Generated values are the same as not expected values'

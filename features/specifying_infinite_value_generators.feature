@@ -42,7 +42,7 @@ class InfiniteValueGenerator1
     }
 }
     """
-        When I run phpspec
+        When I run phpspec using the tap format
         Then the suite should pass
 
     Scenario: Negative matching infinite value generator
@@ -78,5 +78,5 @@ class InfiniteValueGenerator2
     }
 }
     """
-        When I run phpspec
+        When I run phpspec using the tap format
         Then the suite should pass
