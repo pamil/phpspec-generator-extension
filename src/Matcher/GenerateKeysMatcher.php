@@ -37,8 +37,8 @@ final class GenerateKeysMatcher implements MatcherInterface
      */
     public function positiveMatch($name, $subject, array $arguments)
     {
-        if (!$subject instanceof \Generator) {
-            throw new FailureException('Subject should be an instance of \Generator.');
+        if (!$subject instanceof \Iterator) {
+            throw new FailureException('Subject should be an instance of \Iterator.');
         }
 
         $toGenerate = count($arguments);
