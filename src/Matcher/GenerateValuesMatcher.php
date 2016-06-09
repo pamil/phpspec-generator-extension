@@ -9,7 +9,7 @@ use PhpSpec\Matcher\MatcherInterface;
 /**
  * @author Kamil Kokot <kamil@kokot.me>
  */
-final class GenerateMatcher implements MatcherInterface
+final class GenerateValuesMatcher implements MatcherInterface
 {
     /**
      * @var Presenter
@@ -29,7 +29,7 @@ final class GenerateMatcher implements MatcherInterface
      */
     public function supports($name, $subject, array $arguments)
     {
-        return 'generate' === $name;
+        return 'generateValues' === $name;
     }
 
     /**
@@ -43,9 +43,7 @@ final class GenerateMatcher implements MatcherInterface
 
         $toGenerate = count($arguments);
         $generated = 0;
-        foreach ($arguments as $argument) {
-            list($expectedKey, $expectedValue) = $this->castArgumentToKeyValueTuple($argument);
-
+        foreach ($arguments as $expected) {
             if (!$subject->valid()) {
                 throw new FailureException(sprintf(
                     'Expected %d elements, but only %d was generated.',
@@ -54,16 +52,13 @@ final class GenerateMatcher implements MatcherInterface
                 ));
             }
 
-            $actualKey = $subject->key();
-            $actualValue = $subject->current();
-            if ($expectedKey !== $actualKey || $expectedValue !== $actualValue) {
+            $actual = $subject->current();
+            if ($expected !== $actual) {
                 throw new FailureException(sprintf(
-                    'Element #%d was expected to have key %s with value %s, but key %s with value %s was given.',
+                    'Element #%d was expected to be %s, but %s was given.',
                     $generated,
-                    $this->presenter->presentValue($expectedKey),
-                    $this->presenter->presentValue($expectedValue),
-                    $this->presenter->presentValue($actualKey),
-                    $this->presenter->presentValue($actualValue)
+                    $this->presenter->presentValue($expected),
+                    $this->presenter->presentValue($actual)
                 ));
             }
 
@@ -83,7 +78,7 @@ final class GenerateMatcher implements MatcherInterface
             return;
         }
 
-        throw new FailureException('Generated elements are the same as not expected elements.');
+        throw new FailureException('Generated values are the same as not expected values.');
     }
 
     /**
@@ -92,27 +87,5 @@ final class GenerateMatcher implements MatcherInterface
     public function getPriority()
     {
         return 100;
-    }
-
-    /**
-     * @param array $argument
-     *
-     * @return array
-     *
-     * @throws FailureException
-     */
-    private function castArgumentToKeyValueTuple(array $argument)
-    {
-        switch (count($argument)) {
-            case 1:
-                return [key($argument), current($argument)];
-            case 2:
-                return $argument;
-        }
-
-        throw new FailureException(sprintf(
-            'Cannot match against %s expected argument.',
-            $this->presenter->presentValue($argument)
-        ));
     }
 }
