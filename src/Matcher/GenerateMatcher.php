@@ -9,21 +9,8 @@ use PhpSpec\Matcher\MatcherInterface;
 /**
  * @author Kamil Kokot <kamil@kokot.me>
  */
-final class GenerateMatcher implements MatcherInterface
+final class GenerateMatcher extends AbstractGenerateMatcher
 {
-    /**
-     * @var Presenter
-     */
-    private $presenter;
-
-    /**
-     * @param Presenter $presenter
-     */
-    public function __construct(Presenter $presenter)
-    {
-        $this->presenter = $presenter;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -35,63 +22,30 @@ final class GenerateMatcher implements MatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function positiveMatch($name, $subject, array $arguments)
+    protected function doMatch($name, \Iterator $subject, $expected, $elementNumber)
     {
-        if (!$subject instanceof \Iterator) {
-            throw new FailureException('Subject should be an instance of \Iterator.');
-        }
+        list($expectedKey, $expectedValue) = $this->castArgumentToKeyValueTuple($expected);
 
-        $toGenerate = count($arguments);
-        $generated = 0;
-        foreach ($arguments as $argument) {
-            list($expectedKey, $expectedValue) = $this->castArgumentToKeyValueTuple($argument);
-
-            if (!$subject->valid()) {
-                throw new FailureException(sprintf(
-                    'Expected %d elements, but only %d was generated.',
-                    $toGenerate,
-                    $generated
-                ));
-            }
-
-            $actualKey = $subject->key();
-            $actualValue = $subject->current();
-            if ($expectedKey !== $actualKey || $expectedValue !== $actualValue) {
-                throw new FailureException(sprintf(
-                    'Element #%d was expected to have key %s with value %s, but key %s with value %s was given.',
-                    $generated,
-                    $this->presenter->presentValue($expectedKey),
-                    $this->presenter->presentValue($expectedValue),
-                    $this->presenter->presentValue($actualKey),
-                    $this->presenter->presentValue($actualValue)
-                ));
-            }
-
-            $subject->next();
-            ++$generated;
+        $actualKey = $subject->key();
+        $actualValue = $subject->current();
+        if ($expectedKey !== $actualKey || $expectedValue !== $actualValue) {
+            throw new FailureException(sprintf(
+                'Element #%d was expected to have key %s with value %s, but key %s with value %s was given.',
+                $elementNumber,
+                $this->presenter->presentValue($expectedKey),
+                $this->presenter->presentValue($expectedValue),
+                $this->presenter->presentValue($actualKey),
+                $this->presenter->presentValue($actualValue)
+            ));
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function negativeMatch($name, $subject, array $arguments)
+    protected function handleNegativeMatchFailure($name, $subject, array $arguments)
     {
-        try {
-            $this->positiveMatch($name, $subject, $arguments);
-        } catch (FailureException $exception) {
-            return;
-        }
-
         throw new FailureException('Generated elements are the same as not expected elements.');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 100;
     }
 
     /**

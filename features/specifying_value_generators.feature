@@ -184,3 +184,106 @@ class ValueGenerator5
         When I run phpspec using the tap format
         Then the suite should not pass
         And I should see 'Generated values are the same as not expected values'
+
+    Scenario: Positive matching value generator for not generating anything
+        Given the spec file "spec/Pamil/ValueGenerator6Spec.php" contains:
+    """
+<?php
+
+namespace spec\Pamil;
+
+use PhpSpec\ObjectBehavior;
+
+class ValueGenerator6Spec extends ObjectBehavior
+{
+    function it_generates_names()
+    {
+        $this->generateNames()->shouldGenerateValues();
+    }
+}
+    """
+        And the class file "src/Pamil/ValueGenerator6.php" contains:
+    """
+<?php
+
+namespace Pamil;
+
+class ValueGenerator6
+{
+    public function generateNames()
+    {
+        return new \ArrayIterator([]);
+    }
+}
+    """
+        When I run phpspec using the tap format
+        Then the suite should pass
+
+    Scenario: Negative matching value generator for not generating anything
+        Given the spec file "spec/Pamil/ValueGenerator7Spec.php" contains:
+    """
+<?php
+
+namespace spec\Pamil;
+
+use PhpSpec\ObjectBehavior;
+
+class ValueGenerator7Spec extends ObjectBehavior
+{
+    function it_generates_names()
+    {
+        $this->generateNames()->shouldNotGenerateValues();
+    }
+}
+    """
+        And the class file "src/Pamil/ValueGenerator7.php" contains:
+    """
+<?php
+
+namespace Pamil;
+
+class ValueGenerator7
+{
+    public function generateNames()
+    {
+        yield 'High Sparrow';
+    }
+}
+    """
+        When I run phpspec using the tap format
+        Then the suite should pass
+
+    Scenario: Positive matching value generator for not generating anything failing
+        Given the spec file "spec/Pamil/ValueGenerator8Spec.php" contains:
+    """
+<?php
+
+namespace spec\Pamil;
+
+use PhpSpec\ObjectBehavior;
+
+class ValueGenerator8Spec extends ObjectBehavior
+{
+    function it_generates_names()
+    {
+        $this->generateNames()->shouldGenerateValues();
+    }
+}
+    """
+        And the class file "src/Pamil/ValueGenerator8.php" contains:
+    """
+<?php
+
+namespace Pamil;
+
+class ValueGenerator8
+{
+    public function generateNames()
+    {
+        yield 'High Sparrow';
+    }
+}
+    """
+        When I run phpspec using the tap format
+        Then the suite should not pass
+        And I should see 'Expected not to generate any elements, but the iterator is still valid'
