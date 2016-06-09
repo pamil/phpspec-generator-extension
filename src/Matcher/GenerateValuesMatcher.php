@@ -9,21 +9,8 @@ use PhpSpec\Matcher\MatcherInterface;
 /**
  * @author Kamil Kokot <kamil@kokot.me>
  */
-final class GenerateValuesMatcher implements MatcherInterface
+final class GenerateValuesMatcher extends AbstractGenerateMatcher
 {
-    /**
-     * @var Presenter
-     */
-    private $presenter;
-
-    /**
-     * @param Presenter $presenter
-     */
-    public function __construct(Presenter $presenter)
-    {
-        $this->presenter = $presenter;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -35,57 +22,25 @@ final class GenerateValuesMatcher implements MatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function positiveMatch($name, $subject, array $arguments)
+    protected function doMatch($name, \Iterator $subject, $expected, $elementNumber)
     {
-        if (!$subject instanceof \Iterator) {
-            throw new FailureException('Subject should be an instance of \Iterator.');
-        }
-
-        $toGenerate = count($arguments);
-        $generated = 0;
-        foreach ($arguments as $expected) {
-            if (!$subject->valid()) {
-                throw new FailureException(sprintf(
-                    'Expected %d elements, but only %d was generated.',
-                    $toGenerate,
-                    $generated
-                ));
-            }
-
-            $actual = $subject->current();
-            if ($expected !== $actual) {
-                throw new FailureException(sprintf(
-                    'Element #%d was expected to be %s, but %s was given.',
-                    $generated,
-                    $this->presenter->presentValue($expected),
-                    $this->presenter->presentValue($actual)
-                ));
-            }
-
-            $subject->next();
-            ++$generated;
+        $actual = $subject->current();
+        if ($expected !== $actual) {
+            throw new FailureException(sprintf(
+                'Element #%d was expected to be %s, but %s was given.',
+                $elementNumber,
+                $this->presenter->presentValue($expected),
+                $this->presenter->presentValue($actual)
+            ));
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function negativeMatch($name, $subject, array $arguments)
+    protected function handleNegativeMatchFailure($name, $subject, array $arguments)
     {
-        try {
-            $this->positiveMatch($name, $subject, $arguments);
-        } catch (FailureException $exception) {
-            return;
-        }
-
         throw new FailureException('Generated values are the same as not expected values.');
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 100;
-    }
 }
+
