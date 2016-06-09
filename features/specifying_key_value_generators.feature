@@ -254,3 +254,106 @@ class KeyValueGenerator7
         When I run phpspec using the tap format
         Then the suite should not pass
         And I should see 'Generated elements are the same as not expected elements'
+
+    Scenario: Positive matching key value generator for not generating anything
+        Given the spec file "spec/Pamil/KeyValueGenerator8Spec.php" contains:
+    """
+<?php
+
+namespace spec\Pamil;
+
+use PhpSpec\ObjectBehavior;
+
+class KeyValueGenerator8Spec extends ObjectBehavior
+{
+    function it_generates_names()
+    {
+        $this->generateNames()->shouldGenerate();
+    }
+}
+    """
+        And the class file "src/Pamil/KeyValueGenerator8.php" contains:
+    """
+<?php
+
+namespace Pamil;
+
+class KeyValueGenerator8
+{
+    public function generateNames()
+    {
+        return new \ArrayIterator([]);
+    }
+}
+    """
+        When I run phpspec using the tap format
+        Then the suite should pass
+
+    Scenario: Negative matching key value generator for not generating anything
+        Given the spec file "spec/Pamil/KeyValueGenerator9Spec.php" contains:
+    """
+<?php
+
+namespace spec\Pamil;
+
+use PhpSpec\ObjectBehavior;
+
+class KeyValueGenerator9Spec extends ObjectBehavior
+{
+    function it_generates_names()
+    {
+        $this->generateNames()->shouldNotGenerate();
+    }
+}
+    """
+        And the class file "src/Pamil/KeyValueGenerator9.php" contains:
+    """
+<?php
+
+namespace Pamil;
+
+class KeyValueGenerator9
+{
+    public function generateNames()
+    {
+        yield 'High Sparrow' => 42;
+    }
+}
+    """
+        When I run phpspec using the tap format
+        Then the suite should pass
+
+    Scenario: Positive matching key value generator for not generating anything failing
+        Given the spec file "spec/Pamil/KeyValueGenerator10Spec.php" contains:
+    """
+<?php
+
+namespace spec\Pamil;
+
+use PhpSpec\ObjectBehavior;
+
+class KeyValueGenerator10Spec extends ObjectBehavior
+{
+    function it_generates_names()
+    {
+        $this->generateNames()->shouldGenerate();
+    }
+}
+    """
+        And the class file "src/Pamil/KeyValueGenerator10.php" contains:
+    """
+<?php
+
+namespace Pamil;
+
+class KeyValueGenerator10
+{
+    public function generateNames()
+    {
+        yield 'High Sparrow' => 42;
+    }
+}
+    """
+        When I run phpspec using the tap format
+        Then the suite should not pass
+        And I should see 'Expected not to generate any elements, but the iterator is still valid'

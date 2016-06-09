@@ -184,3 +184,106 @@ class KeyGenerator5
         When I run phpspec using the tap format
         Then the suite should not pass
         And I should see 'Generated keys are the same as not expected keys'
+
+    Scenario: Positive matching key generator for not generating anything
+        Given the spec file "spec/Pamil/KeyGenerator6Spec.php" contains:
+    """
+<?php
+
+namespace spec\Pamil;
+
+use PhpSpec\ObjectBehavior;
+
+class KeyGenerator6Spec extends ObjectBehavior
+{
+    function it_generates_names()
+    {
+        $this->generateNames()->shouldGenerateKeys();
+    }
+}
+    """
+        And the class file "src/Pamil/KeyGenerator6.php" contains:
+    """
+<?php
+
+namespace Pamil;
+
+class KeyGenerator6
+{
+    public function generateNames()
+    {
+        return new \ArrayIterator([]);
+    }
+}
+    """
+        When I run phpspec using the tap format
+        Then the suite should pass
+
+    Scenario: Negative matching key generator for not generating anything
+        Given the spec file "spec/Pamil/KeyGenerator7Spec.php" contains:
+    """
+<?php
+
+namespace spec\Pamil;
+
+use PhpSpec\ObjectBehavior;
+
+class KeyGenerator7Spec extends ObjectBehavior
+{
+    function it_generates_names()
+    {
+        $this->generateNames()->shouldNotGenerateKeys();
+    }
+}
+    """
+        And the class file "src/Pamil/KeyGenerator7.php" contains:
+    """
+<?php
+
+namespace Pamil;
+
+class KeyGenerator7
+{
+    public function generateNames()
+    {
+        yield 'High Sparrow' => 42;
+    }
+}
+    """
+        When I run phpspec using the tap format
+        Then the suite should pass
+
+    Scenario: Positive matching key generator for not generating anything failing
+        Given the spec file "spec/Pamil/KeyGenerator8Spec.php" contains:
+    """
+<?php
+
+namespace spec\Pamil;
+
+use PhpSpec\ObjectBehavior;
+
+class KeyGenerator8Spec extends ObjectBehavior
+{
+    function it_generates_names()
+    {
+        $this->generateNames()->shouldGenerateKeys();
+    }
+}
+    """
+        And the class file "src/Pamil/KeyGenerator8.php" contains:
+    """
+<?php
+
+namespace Pamil;
+
+class KeyGenerator8
+{
+    public function generateNames()
+    {
+        yield 'High Sparrow' => 42;
+    }
+}
+    """
+        When I run phpspec using the tap format
+        Then the suite should not pass
+        And I should see 'Expected not to generate any elements, but the iterator is still valid'
