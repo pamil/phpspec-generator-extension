@@ -1,5 +1,5 @@
-Feature: Specifying infinite generators using PhpSpecGeneratorExtension
-    In order to specify infinite generators
+Feature: Specifying infinite value generators using PhpSpecGeneratorExtension
+    In order to specify infinite value generators
     I need to enable PhpSpecGeneratorExtension
 
     Background:
@@ -9,8 +9,8 @@ extensions:
     - Pamil\PhpSpecGeneratorExtension\Extension
     """
 
-    Scenario: Positive matching infinite generator
-        Given the spec file "spec/Pamil/InfiniteGenerator1Spec.php" contains:
+    Scenario: Positive matching infinite value generator
+        Given the spec file "spec/Pamil/InfiniteValueGenerator1Spec.php" contains:
     """
 <?php
 
@@ -18,21 +18,21 @@ namespace spec\Pamil;
 
 use PhpSpec\ObjectBehavior;
 
-class InfiniteGenerator1Spec extends ObjectBehavior
+class InfiniteValueGenerator1Spec extends ObjectBehavior
 {
     function it_generates_not_so_random_names()
     {
-        $this->generateNames()->shouldGenerate(['John 1', 'John 2', 'John 3']);
+        $this->generateNames()->shouldGenerateValues('John 1', 'John 2', 'John 3');
     }
 }
     """
-        And the class file "src/Pamil/InfiniteGenerator1.php" contains:
+        And the class file "src/Pamil/InfiniteValueGenerator1.php" contains:
     """
 <?php
 
 namespace Pamil;
 
-class InfiniteGenerator1
+class InfiniteValueGenerator1
 {
     public function generateNames()
     {
@@ -45,8 +45,8 @@ class InfiniteGenerator1
         When I run phpspec
         Then the suite should pass
 
-    Scenario: Negative matching infinite generator
-        Given the spec file "spec/Pamil/InfiniteGenerator2Spec.php" contains:
+    Scenario: Negative matching infinite value generator
+        Given the spec file "spec/Pamil/InfiniteValueGenerator2Spec.php" contains:
     """
 <?php
 
@@ -54,21 +54,21 @@ namespace spec\Pamil;
 
 use PhpSpec\ObjectBehavior;
 
-class InfiniteGenerator2Spec extends ObjectBehavior
+class InfiniteValueGenerator2Spec extends ObjectBehavior
 {
     function it_generates_not_so_random_names()
     {
-        $this->generateNames()->shouldNotGenerate(['Anakin 1', 'Luke 2', 'R2D2']);
+        $this->generateNames()->shouldNotGenerateValues('Anakin', 'Luke', 'Yoda');
     }
 }
     """
-        And the class file "src/Pamil/InfiniteGenerator2.php" contains:
+        And the class file "src/Pamil/InfiniteValueGenerator2.php" contains:
     """
 <?php
 
 namespace Pamil;
 
-class InfiniteGenerator2
+class InfiniteValueGenerator2
 {
     public function generateNames()
     {
