@@ -4,12 +4,12 @@ namespace Pamil\PhpSpecGeneratorExtension\Matcher;
 
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\Formatter\Presenter\Presenter;
-use PhpSpec\Matcher\MatcherInterface;
+use PhpSpec\Matcher\Matcher;
 
 /**
  * @author Kamil Kokot <kamil@kokot.me>
  */
-abstract class AbstractGenerateMatcher implements MatcherInterface
+abstract class AbstractGenerateMatcher implements Matcher
 {
     /**
      * @var Presenter
