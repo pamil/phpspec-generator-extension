@@ -5,8 +5,8 @@ Feature: Specifying infinite value generators using PhpSpecGeneratorExtension
     Background:
         Given the config file contains:
     """
-extensions:
-    - Pamil\PhpSpecGeneratorExtension\Extension
+    extensions:
+        Pamil\PhpSpecGeneratorExtension\Extension: ~
     """
 
     Scenario: Positive matching infinite value generator

@@ -5,8 +5,8 @@ Feature: Specifying infinite key value generators using PhpSpecGeneratorExtensio
     Background:
         Given the config file contains:
     """
-extensions:
-    - Pamil\PhpSpecGeneratorExtension\Extension
+    extensions:
+        Pamil\PhpSpecGeneratorExtension\Extension: ~
     """
 
     Scenario: Positive matching infinite key value generator

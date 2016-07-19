@@ -3,8 +3,6 @@
 namespace Pamil\PhpSpecGeneratorExtension\Matcher;
 
 use PhpSpec\Exception\Example\FailureException;
-use PhpSpec\Formatter\Presenter\Presenter;
-use PhpSpec\Matcher\MatcherInterface;
 
 /**
  * @author Kamil Kokot <kamil@kokot.me>
