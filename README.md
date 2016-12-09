@@ -1,6 +1,9 @@
-PhpSpecGeneratorExtension [![Build Status](https://travis-ci.org/pamil/phpspec-generator-extension.png?branch=master)](https://travis-ci.org/pamil/phpspec-generator-extension)
-=========================
+# PhpSpecGeneratorExtension [![Build Status](https://travis-ci.org/pamil/phpspec-generator-extension.png?branch=master)](https://travis-ci.org/pamil/phpspec-generator-extension)
 
-Versions <0.4 supports PhpSpec 2; versions >=0.4 supports PhpSpec 3.
+## Abandonded, already implemented in PhpSpec 3.2!
 
-Documentation incoming, in the meanwhile have a look at `features/` dir for examples. MIT licensed.
+For older versions:
+ - **`PhpSpec 2.*`**: Use `v0.3.0`
+ - **`PhpSpec 3.0 and 3.1`**: Use `v0.4.1`
+
+Documentation in `features/`. MIT licensed.
